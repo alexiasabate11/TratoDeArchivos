@@ -13,6 +13,7 @@ namespace TratoDeArchivos
         string nombreJugador;
         string nombreEquipo;
         List<Jugadores> jugadores;
+        string rutaArchivo = @"C:\Users\alexi\OneDrive\Escriptori\jugadoresFutbol.txt";
 
         public Jugadores(int Dorsal, string NombreJugador, string NombreEquipo) 
         {
@@ -39,7 +40,7 @@ namespace TratoDeArchivos
             set => nombreEquipo = value; 
         }
 
-        public bool ComprobarSiExisteArchivoJugadores(string rutaArchivo)
+        public bool ComprobarSiExisteArchivoJugadores()
         {
             if (!File.Exists(rutaArchivo))
                 return false;
@@ -114,6 +115,35 @@ namespace TratoDeArchivos
         {
             Console.WriteLine("Numero de dorsal: ");
             return Int32.Parse(Console.ReadLine()); ;
+        }
+
+        public void GuardarArchivoJugadores()
+        {
+            try
+            {
+                StreamWriter sw = new StreamWriter(rutaArchivo);
+
+                foreach (Jugadores jugador in jugadores)
+                    sw.WriteLine("{0},{1},{2}", jugador.Dorsal, jugador.Nombrejugador, jugador.NombreEquipo);
+
+                sw.Close();
+
+                Console.WriteLine("Guardado!");
+                Console.WriteLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+        }
+
+        public void MostrarJugadores()
+        {
+            StreamWriter sw = new StreamWriter(rutaArchivo);
+            foreach (Jugadores jugador in jugadores)
+                sw.WriteLine("{0},{1},{2}", jugador.Dorsal, jugador.Nombrejugador, jugador.NombreEquipo);
+
+            Console.WriteLine();
         }
     }
 }
