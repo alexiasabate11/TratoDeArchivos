@@ -14,9 +14,15 @@ namespace TratoDeArchivos
     internal class Program
     {
         static Dictionary<string, int> equipos = new Dictionary<string, int>();
+
         static string rutaArchivo = @"C:\Users\alexi\OneDrive\Escriptori\ligaFutbol.txt";
+
+
         static void Main(string[] args)
         {
+
+
+
             Console.WriteLine();
             do
             {
