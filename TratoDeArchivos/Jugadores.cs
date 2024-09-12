@@ -68,28 +68,52 @@ namespace TratoDeArchivos
         {
             Console.WriteLine("Dar de alta a un jugador");
 
-            Console.WriteLine("Nombre del jugador:");
-            string nombre = Console.ReadLine();
-
-            Console.WriteLine("Numero de dorsal del jugador:");
-            int dorsal = Int32.Parse(Console.ReadLine());
-
-            Console.WriteLine("Nombre del equipo del jugador:");
-            string equipo = Console.ReadLine();
-
-            Jugadores jugadorNuevo = new Jugadores(dorsal, nombre, equipo);
+            Jugadores jugadorNuevo = new Jugadores(PedirNumeroDorsal(), PedirNombreJugador(), PedirNombreEquipo());
             jugadores.Add(jugadorNuevo);
+
+            Console.WriteLine();
         }
 
-        public void Eliminar()
+        public void EliminarJugador()
         {
             Console.WriteLine("Dar de baja a un jugador.");
 
-            Console.WriteLine("Nombre del jugador:");
-            Jugadores jugadorAEliminar = jugadores.Find(j => j.Nombrejugador == Console.ReadLine());
+            Jugadores jugadorAEliminar = jugadores.Find(j => j.Nombrejugador == PedirNombreJugador());
             jugadores.Remove(jugadorAEliminar);
 
             Console.WriteLine();
+        }
+
+        public void EditarDorsal()
+        {
+            Console.WriteLine("Modificar la dorsal de un equipo.");
+            Jugadores jugadorAEditar = jugadores.Find(j => j.Nombrejugador == PedirNombreJugador());
+            jugadorAEditar.Dorsal = PedirNumeroDorsal();
+        }
+
+        public void EditarEquipo()
+        {
+            Console.WriteLine("Modificar la dorsal de un equipo.");
+            Jugadores jugadorAEditar = jugadores.Find(j => j.Nombrejugador == PedirNombreJugador());
+            jugadorAEditar.NombreEquipo = PedirNombreEquipo();
+        }
+
+        static string PedirNombreJugador()
+        {
+            Console.WriteLine("Nombre del jugador: ");
+            return Console.ReadLine().ToLower();
+        }
+
+        static string PedirNombreEquipo()
+        {
+            Console.WriteLine("Nombre del equipo: ");
+            return Console.ReadLine().ToLower();
+        }
+
+        static int PedirNumeroDorsal() 
+        {
+            Console.WriteLine("Numero de dorsal: ");
+            return Int32.Parse(Console.ReadLine()); ;
         }
     }
 }

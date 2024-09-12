@@ -13,29 +13,27 @@ namespace TratoDeArchivos
 {
     internal class Program
     {
-        static Dictionary<string, int> equipos = new Dictionary<string, int>();
-
-        static string rutaArchivo = @"C:\Users\alexi\OneDrive\Escriptori\ligaFutbol.txt";
+        static Dictionary<string, Jugadores[]> equipos = new Dictionary<string, Jugadores[]>();
+        static Jugadores jugadores;
+        static string rutaArchivoEquipos = @"C:\Users\alexi\OneDrive\Escriptori\equiposFutbol.txt";
+        static string rutaArchivoJugadores = @"C:\Users\alexi\OneDrive\Escriptori\jugadoresFutbol.txt";
 
 
         static void Main(string[] args)
         {
-
-
-
             Console.WriteLine();
             do
             {
-                switch (!ComprobarSiExisteArchivo() ? 1 : Menu())
+                switch (jugadores.ComprobarSiExisteArchivoJugadores(rutaArchivoJugadores) ? Menu() : 1)
                 {
                     case 1:
-                        IntroducirNuevoEquipo();
+                        IntroducirNuevo();
                         break;
                     case 2:
-                        EliminarEquipo();
+                        Eliminar();
                         break;
                     case 3:
-                        EditarPuntuacionEquipo();
+                        EditarPuntuacion();
                         break;
                     case 4:
                         MostrarEquipos();
@@ -43,7 +41,7 @@ namespace TratoDeArchivos
                     case 0:
                         return;
                 }
-                GuardarArchivo();
+                Guardar();
                 Console.WriteLine();
             } 
             while(true);
@@ -53,77 +51,90 @@ namespace TratoDeArchivos
         {
             Console.WriteLine(@"
 Que quieres hacer?
-    1. Dar de alta a un equipo
-    2. Dar de baja a un equipo
-    3. Modificar la puntuación
-    4. Ver todos los equipos y su puntuacion
+    1. Dar de alta a un equipo o jugador
+    2. Dar de baja a un equipo o jugador
+    3. Modificar la puntuación de un equipo o jugador
+    4. Ver todos los equipos, su puntuación y sus jugadores
     0. Salir
     ");
             return PedirNumero();
         }
 
-        static bool ComprobarSiExisteArchivo()
+        
+        static void IntroducirNuevo()
         {
-            if (!File.Exists(rutaArchivo))
-                return false;
-            
-            try
+            Console.WriteLine(@"
+Dar de alta a:
+    1. Un equipo.
+    2. Un jugador. 
+");
+            Int32.TryParse(Console.ReadLine(), out int tipo);
+            switch (tipo)
             {
-                String linea;
-                StreamReader sr = new StreamReader(rutaArchivo);
-                while ((linea = sr.ReadLine()) != null)
-                {
-                    string[] equipo = linea.Split(',');
-                    equipos.Add(equipo[0], Int32.Parse(equipo[1]));
-                }
-                sr.Close();
+                case 1:
+                    break;
+                case 2:
+                    jugadores.IntroducirNuevoJugador();
+                    break;
             }
-            catch (Exception e)
+        }
+
+        static void Editar()
+        {
+            Console.WriteLine(@"
+Dar de alta a:
+    1. Un equipo.
+    2. Un jugador. 
+");
+            Int32.TryParse(Console.ReadLine(), out int tipo);
+            switch (tipo)
             {
-                Console.WriteLine("Exception: " + e.Message);
-                Console.ReadKey();
+                case 1:
+                    break;
+                case 2:
+                    Console.WriteLine(@"
+Que quieres editar?
+    1. Dorsal.
+    2. Equipo.
+");
+                    Int32.TryParse(Console.ReadLine(), out int editar);
+                    switch (editar)
+                    {
+                        case 1:
+                            jugadores.EditarDorsal();
+                            break;
+                        case 2:
+                            jugadores.EditarEquipo();
+                            break;
+                    }
+                    break;
             }
-
-            return true;
-        }
-        static void IntroducirNuevoEquipo()
-        {
-            Console.WriteLine("Dar de alta a un equipo.");
-            string nombreEquipo = PedirNombreEquipo();
-
-            equipos.Add(nombreEquipo, 0);
         }
 
-        static void EditarPuntuacionEquipo()
-        {
-            Console.WriteLine("Modificar la puntuacion de un equipo.");
-            string equipo = PedirNombreEquipo();
-
-            Console.WriteLine();
-
-            Console.WriteLine("Que puntuación le quieres poner?");
-            int puntuacion = PedirNumero();
-
-            Console.WriteLine();
-
-            equipos[equipo] = puntuacion;
-        }
-
-        static void EliminarEquipo()
+        static void Eliminar()
         {
             Console.WriteLine("Dar de baja a un equipo.");
-            string equipo = PedirNombreEquipo();
-
-            Console.WriteLine();
-
-            equipos.Remove(equipo);
+            Console.WriteLine(@"
+Dar de baja a:
+    1. Un equipo.
+    2. Un jugador. 
+");
+            Int32.TryParse(Console.ReadLine(), out int tipo);
+            switch (tipo)
+            {
+                case 1:
+                    break;
+                case 2:
+                    jugadores.EliminarJugador();
+                    break;
+            }
         }
 
-        static void GuardarArchivo()
+        static void Guardar()
         {
             try
             {
-                StreamWriter sw = new StreamWriter(rutaArchivo);
+                StreamWriter sw = new StreamWriter(rutaArchivoEquipos);
 
                 foreach (KeyValuePair<string, int> equipo in equipos)
                     sw.WriteLine("{0},{1}",equipo.Key, equipo.Value);
@@ -139,7 +150,7 @@ Que quieres hacer?
             }
         }
 
-        static string PedirNombreEquipo()
+        static string PedirNombre()
         {
             Console.WriteLine("Dime el nombre del equipo: ");
 
