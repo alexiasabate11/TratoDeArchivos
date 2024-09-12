@@ -32,7 +32,7 @@ namespace TratoDeArchivos
                         EditarPuntuacionEquipo();
                         break;
                     case 4:
-                        MostrarEquiposYPuntuacion();
+                        MostrarEquipos();
                         break;
                     case 0:
                         return;
@@ -156,7 +156,7 @@ Que quieres hacer?
             return numero;
         }
 
-        static void MostrarEquiposYPuntuacion()
+        static void MostrarEquipos()
         {
             foreach (KeyValuePair<string, int> equipo in equipos)
                 Console.WriteLine("{0},{1}",equipo.Key,equipo.Value);
