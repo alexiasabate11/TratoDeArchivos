@@ -13,10 +13,8 @@ namespace TratoDeArchivos
 {
     internal class Program
     {
-        static Dictionary<string, Jugadores[]> equipos = new Dictionary<string, Jugadores[]>();
         static Jugadores jugadores;
-        static Jugadores[] todosJugadores;
-        static string rutaArchivoEquipos = @"C:\Users\alexi\OneDrive\Escriptori\equiposFutbol.txt";
+        static Equipos equipos;
 
 
         static void Main(string[] args)
@@ -36,7 +34,7 @@ namespace TratoDeArchivos
                         Editar();
                         break;
                     case 4:
-                        jugadores.MostrarJugadores();
+                        MostrarTodo();
                         break;
                     case 0:
                         return;
@@ -57,7 +55,17 @@ Que quieres hacer?
     4. Ver todos los equipos y sus jugadores
     0. Salir
     ");
-            return PedirNumero();
+            int menu;
+            do
+            {
+                menu = Int32.TryParse(Console.ReadLine(), out int result) ? result : -1;
+
+                if (menu == -1)
+                    Console.WriteLine("Error: Introduce un numero");
+            }
+            while (menu != -1);
+
+            return menu;
         }
 
         
@@ -72,6 +80,7 @@ Dar de alta a:
             switch (tipo)
             {
                 case 1:
+                    equipos.IntroducirNuevoEquipo();
                     break;
                 case 2:
                     jugadores.IntroducirNuevoJugador();
@@ -90,6 +99,21 @@ Editar:
             switch (tipo)
             {
                 case 1:
+                    Console.WriteLine(@"
+Que quieres editar?
+    1. Equipo.
+    2. Puntuacion.
+");
+                    Int32.TryParse(Console.ReadLine(), out int editarEquipo);
+                    switch (editarEquipo)
+                    {
+                        case 1:
+                            equipos.EditarEquipo();
+                            break;
+                        case 2:
+                            equipos.EditarPuntuacion();
+                            break;
+                    }
                     break;
                 case 2:
                     Console.WriteLine(@"
@@ -97,8 +121,8 @@ Que quieres editar?
     1. Dorsal.
     2. Equipo.
 ");
-                    Int32.TryParse(Console.ReadLine(), out int editar);
-                    switch (editar)
+                    Int32.TryParse(Console.ReadLine(), out int editarJugador);
+                    switch (editarJugador)
                     {
                         case 1:
                             jugadores.EditarDorsal();
@@ -113,7 +137,6 @@ Que quieres editar?
 
         static void Eliminar()
         {
-            Console.WriteLine("Dar de baja a un equipo.");
             Console.WriteLine(@"
 Dar de baja a:
     1. Un equipo.
@@ -123,6 +146,7 @@ Dar de baja a:
             switch (tipo)
             {
                 case 1:
+                    equipos.EliminarEquipo();
                     break;
                 case 2:
                     jugadores.EliminarJugador();
@@ -130,27 +154,25 @@ Dar de baja a:
             }
         }
 
-        static string PedirNombre()
+        static void MostrarTodo()
         {
-            Console.WriteLine("Dime el nombre del equipo: ");
-            return Console.ReadLine().ToLower();
-        }
+            List<Equipos> todosEquipos = equipos.EquiposAll;
+            List<Jugadores> todosJugadores = jugadores.JugadoresAll;
 
-        static int PedirNumero()
-        {
-            int numero;
-
-            do
+            foreach (Equipos equipo in todosEquipos)
             {
-                numero = Int32.TryParse(Console.ReadLine(), out int result) ? result : -1;
+                Console.WriteLine("{0},{1}", equipo.NombreEquipo, equipo.PuntuacionEquipo);
+                Console.WriteLine("--------------------------");
 
-                if (numero == -1)
-                    Console.WriteLine("Error: Introduce un numero");
+                for (int i = 0; i < todosJugadores.Count; i++)
+                {
+                    Jugadores jugadorAEquipo = todosJugadores.Find(j => j.NombreEquipo == equipo.NombreEquipo);
+
+                    if (jugadorAEquipo != null)
+                        Console.WriteLine("\t{0},{1}", jugadorAEquipo.Nombrejugador, jugadorAEquipo.Dorsal);
+                }
             }
-            while (numero != -1);
-            
-            return numero;
+            Console.WriteLine();
         }
-
     }
 }

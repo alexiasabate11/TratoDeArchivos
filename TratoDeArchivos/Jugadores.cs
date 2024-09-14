@@ -12,7 +12,7 @@ namespace TratoDeArchivos
         int dorsal;
         string nombreJugador;
         string nombreEquipo;
-        List<Jugadores> jugadores;
+        List<Jugadores> jugadoresAll;
         string rutaArchivo = @"C:\Users\alexi\OneDrive\Escriptori\jugadoresFutbol.txt";
 
         public Jugadores(int Dorsal, string NombreJugador, string NombreEquipo) 
@@ -40,6 +40,12 @@ namespace TratoDeArchivos
             set => nombreEquipo = value; 
         }
 
+        public List<Jugadores> JugadoresAll
+        {
+            get => jugadoresAll;
+            set => jugadoresAll = value;
+        }
+
         public bool ComprobarSiExisteArchivoJugadores()
         {
             if (!File.Exists(rutaArchivo))
@@ -53,6 +59,7 @@ namespace TratoDeArchivos
                 {
                     string[] datos = linea.Split(',');
                     Jugadores jugador = new Jugadores(Int32.Parse(datos[0]), datos[1], datos[2]);
+                    jugadoresAll.Add(jugador);
                 }
                 sr.Close();
             }
@@ -70,7 +77,7 @@ namespace TratoDeArchivos
             Console.WriteLine("Dar de alta a un jugador");
 
             Jugadores jugadorNuevo = new Jugadores(PedirNumeroDorsal(), PedirNombreJugador(), PedirNombreEquipo());
-            jugadores.Add(jugadorNuevo);
+            jugadoresAll.Add(jugadorNuevo);
 
             Console.WriteLine();
         }
@@ -79,8 +86,8 @@ namespace TratoDeArchivos
         {
             Console.WriteLine("Dar de baja a un jugador.");
 
-            Jugadores jugadorAEliminar = jugadores.Find(j => j.Nombrejugador == PedirNombreJugador());
-            jugadores.Remove(jugadorAEliminar);
+            Jugadores jugadorAEliminar = jugadoresAll.Find(j => j.Nombrejugador == PedirNombreJugador());
+            jugadoresAll.Remove(jugadorAEliminar);
 
             Console.WriteLine();
         }
@@ -88,14 +95,14 @@ namespace TratoDeArchivos
         public void EditarDorsal()
         {
             Console.WriteLine("Modificar la dorsal de un equipo.");
-            Jugadores jugadorAEditar = jugadores.Find(j => j.Nombrejugador == PedirNombreJugador());
+            Jugadores jugadorAEditar = jugadoresAll.Find(j => j.Nombrejugador == PedirNombreJugador());
             jugadorAEditar.Dorsal = PedirNumeroDorsal();
         }
 
         public void EditarEquipo()
         {
             Console.WriteLine("Modificar la dorsal de un equipo.");
-            Jugadores jugadorAEditar = jugadores.Find(j => j.Nombrejugador == PedirNombreJugador());
+            Jugadores jugadorAEditar = jugadoresAll.Find(j => j.Nombrejugador == PedirNombreJugador());
             jugadorAEditar.NombreEquipo = PedirNombreEquipo();
         }
 
@@ -123,7 +130,7 @@ namespace TratoDeArchivos
             {
                 StreamWriter sw = new StreamWriter(rutaArchivo);
 
-                foreach (Jugadores jugador in jugadores)
+                foreach (Jugadores jugador in jugadoresAll)
                     sw.WriteLine("{0},{1},{2}", jugador.Dorsal, jugador.Nombrejugador, jugador.NombreEquipo);
 
                 sw.Close();
@@ -135,15 +142,6 @@ namespace TratoDeArchivos
             {
                 Console.WriteLine("Exception: " + e.Message);
             }
-        }
-
-        public void MostrarJugadores()
-        {
-            StreamWriter sw = new StreamWriter(rutaArchivo);
-            foreach (Jugadores jugador in jugadores)
-                sw.WriteLine("{0},{1},{2}", jugador.Dorsal, jugador.Nombrejugador, jugador.NombreEquipo);
-
-            Console.WriteLine();
         }
     }
 }
