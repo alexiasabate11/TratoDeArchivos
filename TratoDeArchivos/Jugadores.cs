@@ -12,7 +12,7 @@ namespace TratoDeArchivos
         int dorsal;
         string nombreJugador;
         string nombreEquipo;
-        List<Jugadores> jugadoresAll;
+        List<Jugadores> jugadoresAll = new List<Jugadores>();
         string rutaArchivo = @"C:\Users\alexi\OneDrive\Escriptori\jugadoresFutbol.txt";
 
         public Jugadores(int Dorsal, string NombreJugador, string NombreEquipo) 
@@ -21,6 +21,8 @@ namespace TratoDeArchivos
             nombreJugador = NombreJugador;
             nombreEquipo = NombreEquipo;
         }
+
+        public Jugadores() { }
 
         public int Dorsal 
         { 

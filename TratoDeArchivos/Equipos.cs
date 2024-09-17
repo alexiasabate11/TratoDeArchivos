@@ -11,7 +11,7 @@ namespace TratoDeArchivos
     {
         static string nombreEquipo;
         static int puntuacionEquipo;
-        List<Equipos> equiposAll;
+        List<Equipos> equiposAll = new List<Equipos>();
         static string rutaArchivo = @"C:\Users\alexi\OneDrive\Escriptori\equiposFutbol.txt";
 
         public Equipos(string NombreEquipo, int PuntuacionEquipo)
@@ -19,6 +19,8 @@ namespace TratoDeArchivos
             nombreEquipo = NombreEquipo;
             puntuacionEquipo = PuntuacionEquipo;
         }
+
+        public Equipos() { }
 
         public string NombreEquipo
         {

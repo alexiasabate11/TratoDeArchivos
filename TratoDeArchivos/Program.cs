@@ -13,16 +13,19 @@ namespace TratoDeArchivos
 {
     internal class Program
     {
-        static Jugadores jugadores;
-        static Equipos equipos;
-
+        static Jugadores jugadores = new Jugadores();
+        static Equipos equipos = new Equipos();
+        static int menu;
 
         static void Main(string[] args)
         {
             Console.WriteLine();
             do
             {
-                switch (jugadores.ComprobarSiExisteArchivoJugadores() ? Menu() : 1)
+                if (!jugadores.ComprobarSiExisteArchivoJugadores())
+                    equipos.IntroducirNuevoEquipo();
+
+                switch (menu = Menu())
                 {
                     case 1:
                         IntroducirNuevo();
@@ -36,13 +39,11 @@ namespace TratoDeArchivos
                     case 4:
                         MostrarTodo();
                         break;
-                    case 0:
-                        return;
                 }
                 jugadores.GuardarArchivoJugadores();
                 Console.WriteLine();
-            } 
-            while(true);
+            }
+            while (menu != 0);
         }
 
         static int Menu()
@@ -55,16 +56,16 @@ Que quieres hacer?
     4. Ver todos los equipos y sus jugadores
     0. Salir
     ");
-            int menu;
-            do
+
+            while (true)
             {
                 menu = Int32.TryParse(Console.ReadLine(), out int result) ? result : -1;
 
                 if (menu == -1)
                     Console.WriteLine("Error: Introduce un numero");
+                else
+                    break;
             }
-            while (menu != -1);
-
             return menu;
         }
 
