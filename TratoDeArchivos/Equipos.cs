@@ -80,7 +80,7 @@ namespace TratoDeArchivos
 
         public void IntroducirNuevoEquipo()
         {
-            Console.WriteLine("Dar de alta a un jugador");
+            Console.WriteLine("Dar de alta a un equipo");
 
             Equipos equipoNuevo = new Equipos(PedirNombreEquipo(), PedirPuntuacionEquipo());
             equiposAll.Add(equipoNuevo);
@@ -90,7 +90,7 @@ namespace TratoDeArchivos
 
         public void EliminarEquipo()
         {
-            Console.WriteLine("Dar de baja a un jugador.");
+            Console.WriteLine("Dar de baja a un equipo.");
 
             Equipos equipoEliminar = equiposAll.Find(j => j.NombreEquipo == PedirNombreEquipo());
             equiposAll.Remove(equipoEliminar);
@@ -112,7 +112,7 @@ namespace TratoDeArchivos
             equipoAEditar.NombreEquipo = PedirNombreEquipo();
         }
 
-        public void GuardarArchivoJugadores()
+        public void GuardarArchivoEquipos()
         {
             try
             {
@@ -123,7 +123,7 @@ namespace TratoDeArchivos
 
                 sw.Close();
 
-                Console.WriteLine("Guardado!");
+                Console.WriteLine("Equipos Guardados!");
                 Console.WriteLine();
             }
             catch (Exception e)

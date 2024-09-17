@@ -20,12 +20,16 @@ namespace TratoDeArchivos
         static void Main(string[] args)
         {
             Console.WriteLine();
+            if (!jugadores.ComprobarSiExisteArchivoJugadores() || !equipos.ComprobarSiExisteArchivoEquipos())
+            {
+                equipos.IntroducirNuevoEquipo();
+                jugadores.IntroducirNuevoJugador();
+            }
             do
             {
-                if (!jugadores.ComprobarSiExisteArchivoJugadores())
-                    equipos.IntroducirNuevoEquipo();
+                menu = Menu();
 
-                switch (menu = Menu())
+                switch (menu)
                 {
                     case 1:
                         IntroducirNuevo();
@@ -39,8 +43,11 @@ namespace TratoDeArchivos
                     case 4:
                         MostrarTodo();
                         break;
-                }
-                jugadores.GuardarArchivoJugadores();
+                    case 0:
+                        equipos.GuardarArchivoEquipos();
+                        jugadores.GuardarArchivoJugadores();
+                        break;
+                }                
                 Console.WriteLine();
             }
             while (menu != 0);
